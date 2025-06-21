@@ -135,7 +135,7 @@ class HueTapDialBatterySensor(SensorEntity):
 
 class HueTapDialLinkQualitySensor(SensorEntity):
     _attr_device_class = SensorDeviceClass.SIGNAL_STRENGTH
-    _attr_native_unit_of_measurement = SIGNAL_STRENGTH_DECIBELS
+    _attr_native_unit_of_measurement = None
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, config_entry_id, device_id, device_name, initial):
