@@ -30,13 +30,6 @@ This custom integration allows you to use the Philips Hue Tap Dial Switch with H
    - Enter your device ID (as shown in zigbee2mqtt, e.g., "tap_dial_bedroom")
    - Check "Skip MQTT validation" if you get connection errors
 
-### Troubleshooting Discovery
-If auto-discovery doesn't work:
-- Enable debug logging (see [TEST_DISCOVERY.md](TEST_DISCOVERY.md))
-- Try the manual discovery service: `hue_tap_dial_mqtt.discover_devices`
-- Ensure your device name contains "tap_dial" or rename it in zigbee2mqtt
-- Use manual configuration as described above
-
 ## Entities Created
 
 For each Tap Dial device, the following entities are created:
@@ -169,16 +162,6 @@ automation:
 ```
 
 This uses the exact brightness delta value from the device, providing smooth and precise dimming control.
-
-## Troubleshooting
-
-- Make sure your zigbee2mqtt is properly configured and the Tap Dial is paired
-- Check that MQTT integration is installed and configured in Home Assistant
-- The device ID should match exactly what's shown in zigbee2mqtt
-- Check Home Assistant logs for any error messages
-
-### Template Warnings
-If you see warnings like `Template variable warning: 'dict object' has no attribute 'action_type'`, these are from zigbee2mqtt's auto-discovery, not our integration. See [DISABLE_Z2M_DISCOVERY.md](DISABLE_Z2M_DISCOVERY.md) for solutions.
 
 ## Device Triggers
 
