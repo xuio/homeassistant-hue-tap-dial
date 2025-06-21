@@ -147,6 +147,15 @@ async def async_setup_discovery(hass: HomeAssistant) -> None:
         # Use IEEE address or friendly name as unique ID
         unique_id = ieee_addr if ieee_addr else friendly_name
 
+        # Skip if device already configured
+        for entry in hass.config_entries.async_entries(DOMAIN):
+            if entry.data.get(CONF_DEVICE_ID) == friendly_name:
+                _LOGGER.debug(
+                    "Device %s already configured (by topic), skipping discovery",
+                    friendly_name,
+                )
+                return
+
         # Check if already discovered
         if unique_id in _discovered_devices:
             _LOGGER.debug("Device %s already discovered", unique_id)
