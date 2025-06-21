@@ -201,6 +201,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                         event_data = {
                             ATTR_BUTTON: button_num,
                             "press_type": press_type,
+                            ATTR_ACTION: f"button_{button_num}_{press_type}",
                         }
                         if "action_duration" in payload:
                             event_data[ATTR_DURATION] = payload["action_duration"]
@@ -252,6 +253,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                         ATTR_ABS_BRIGHTNESS_DELTA: abs(
                             payload.get("action_brightness_delta", 0)
                         ),
+                        ATTR_ACTION: f"button_{btn}_dial_brightness_step_{direction}",
                     }
                     if "brightness" in payload:
                         event_data[ATTR_BRIGHTNESS] = payload["brightness"]
@@ -271,6 +273,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                         ATTR_ABS_BRIGHTNESS_DELTA: abs(
                             payload.get("action_brightness_delta", 0)
                         ),
+                        ATTR_ACTION: f"brightness_step_{direction}",
                     }
                     if "brightness" in payload:
                         event_data[ATTR_BRIGHTNESS] = payload["brightness"]
@@ -312,6 +315,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                         ATTR_ABS_BRIGHTNESS_DELTA: abs(
                             payload.get("action_brightness_delta", 0)
                         ),
+                        ATTR_ACTION: f"button_{btn}_dial_brightness_step_{direction}",
                     }
                     hass.bus.async_fire(EVENT_TYPE_COMBINED, event_data)
                     _LOGGER.debug("Emitted combined legacy rotate event (btn %s)", btn)
@@ -325,6 +329,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                         ATTR_ABS_BRIGHTNESS_DELTA: abs(
                             payload.get("action_brightness_delta", 0)
                         ),
+                        ATTR_ACTION: f"brightness_step_{direction}",
                     }
                     hass.bus.async_fire(EVENT_TYPE_DIAL, event_data)
                     _LOGGER.debug("Emitted dial event from legacy rotate")

@@ -130,9 +130,7 @@ async def async_attach_trigger(
     event_config = {
         event_trigger.CONF_PLATFORM: "event",
         event_trigger.CONF_EVENT_TYPE: event_type,
-        event_trigger.CONF_EVENT_DATA: {
-            "action": trigger_type,
-        },
+        event_trigger.CONF_EVENT_DATA: {"action": trigger_type},
     }
 
     event_config = event_trigger.TRIGGER_SCHEMA(event_config)
