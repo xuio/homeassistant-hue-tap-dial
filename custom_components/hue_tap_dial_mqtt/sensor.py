@@ -14,7 +14,6 @@ from homeassistant.const import (
     CONF_DEVICE_ID,
     CONF_NAME,
     PERCENTAGE,
-    SIGNAL_STRENGTH_DECIBELS,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect

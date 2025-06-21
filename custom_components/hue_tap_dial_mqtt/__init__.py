@@ -58,8 +58,6 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.EVENT]
 
-SERVICE_DISCOVER = "discover_devices"
-
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the Hue Tap Dial MQTT integration."""
@@ -67,14 +65,6 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
     # Set up discovery when integration loads
     await async_setup_discovery(hass)
-
-    # Register services
-    async def handle_discover(call):
-        """Handle manual discovery service call."""
-        _LOGGER.info("Manual discovery triggered")
-        await mqtt.async_publish(hass, "zigbee2mqtt/bridge/devices/get", "", 0, False)
-
-    hass.services.async_register(DOMAIN, SERVICE_DISCOVER, handle_discover)
 
     return True
 

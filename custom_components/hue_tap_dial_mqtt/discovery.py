@@ -11,6 +11,7 @@ from homeassistant.components import mqtt
 from homeassistant.const import CONF_DEVICE_ID, CONF_NAME
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import discovery_flow
+from homeassistant.config_entries import ConfigEntry
 
 from .const import DOMAIN
 
@@ -18,6 +19,7 @@ _LOGGER = logging.getLogger(__name__)
 
 # Store processed devices to avoid duplicate discoveries
 _discovered_devices: set[str] = set()
+_configured_ids: set[str] = set()
 
 
 async def async_setup_discovery(hass: HomeAssistant) -> None:
@@ -148,13 +150,15 @@ async def async_setup_discovery(hass: HomeAssistant) -> None:
         unique_id = ieee_addr if ieee_addr else friendly_name
 
         # Skip if device already configured
-        for entry in hass.config_entries.async_entries(DOMAIN):
-            if entry.data.get(CONF_DEVICE_ID) == friendly_name:
-                _LOGGER.debug(
-                    "Device %s already configured (by topic), skipping discovery",
-                    friendly_name,
-                )
-                return
+        if (
+            friendly_name in _configured_ids
+            or ieee_addr in _configured_ids
+            or device_id in _configured_ids
+        ):
+            _LOGGER.debug(
+                "Device %s already configured, skipping discovery", friendly_name
+            )
+            return
 
         # Check if already discovered
         if unique_id in _discovered_devices:
@@ -202,5 +206,13 @@ async def async_setup_discovery(hass: HomeAssistant) -> None:
     # Request current devices list
     _LOGGER.info("Requesting device list from zigbee2mqtt")
     await mqtt.async_publish(hass, "zigbee2mqtt/bridge/devices/get", "", 0, False)
+
+    # build configured id set
+    for ent in hass.config_entries.async_entries(DOMAIN):
+        _configured_ids.add(ent.data.get(CONF_DEVICE_ID, ""))
+        if ent.unique_id:
+            _configured_ids.add(ent.unique_id)
+
+    # No runtime listener needed; duplicates prevented by initial set
 
     _LOGGER.info("Hue Tap Dial MQTT discovery set up")
