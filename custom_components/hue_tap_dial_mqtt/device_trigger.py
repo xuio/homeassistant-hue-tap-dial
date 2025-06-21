@@ -25,7 +25,21 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-TRIGGER_TYPES = ALL_ACTIONS
+TRIGGER_TYPES = []
+
+# short/long button
+for i in range(1, 5):
+    TRIGGER_TYPES.extend(
+        [
+            f"button_{i}_short",
+            f"button_{i}_long",
+            f"button_{i}_dial_brightness_step_up",
+            f"button_{i}_dial_brightness_step_down",
+        ]
+    )
+
+# free dial
+TRIGGER_TYPES.extend(["brightness_step_up", "brightness_step_down"])
 
 TRIGGER_SCHEMA = DEVICE_TRIGGER_BASE_SCHEMA.extend(
     {
@@ -44,33 +58,33 @@ async def async_get_triggers(
     if not device or device.model != "Hue Tap Dial Switch":
         return []
 
-    triggers = []
+    triggers: list[dict[str, Any]] = []
 
-    # Button triggers
-    for button_num in range(1, 5):
-        for action in ["press", "press_release", "hold", "hold_release"]:
+    # Short/long press
+    for btn in range(1, 5):
+        for press_type in ["short", "long"]:
             triggers.append(
                 {
                     CONF_PLATFORM: "device",
                     CONF_DOMAIN: DOMAIN,
                     CONF_DEVICE_ID: device_id,
-                    CONF_TYPE: f"button_{button_num}_{action}",
+                    CONF_TYPE: f"button_{btn}_{press_type}",
                 }
             )
 
-    # Dial triggers
-    for direction in ["left", "right"]:
-        for speed in ["slow", "fast"]:
+    # Combined button + dial brightness steps
+    for btn in range(1, 5):
+        for direction in ["up", "down"]:
             triggers.append(
                 {
                     CONF_PLATFORM: "device",
                     CONF_DOMAIN: DOMAIN,
                     CONF_DEVICE_ID: device_id,
-                    CONF_TYPE: f"dial_rotate_{direction}_{speed}",
+                    CONF_TYPE: f"button_{btn}_dial_brightness_step_{direction}",
                 }
             )
 
-    # Brightness triggers
+    # Free dial brightness steps
     triggers.extend(
         [
             {
@@ -101,9 +115,13 @@ async def async_attach_trigger(
     trigger_type = config[CONF_TYPE]
 
     # Determine which event type to listen to
-    if trigger_type.startswith("button_"):
+    if trigger_type.startswith("button_") and (
+        "_short" in trigger_type or "_long" in trigger_type
+    ):
         event_type = EVENT_TYPE_BUTTON
-    elif trigger_type.startswith("dial_") or trigger_type.startswith("brightness_"):
+    elif "_dial_brightness_step" in trigger_type:
+        event_type = EVENT_TYPE_COMBINED
+    elif trigger_type.startswith("brightness_step"):
         event_type = EVENT_TYPE_DIAL
     else:
         # For other actions, use a generic event
