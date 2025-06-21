@@ -1,0 +1,54 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured",
+      "invalid_discovery_info": "Invalid discovery information",
+      "not_tap_dial": "Discovered device is not a Hue Tap Dial"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to MQTT broker",
+      "mqtt_not_available": "MQTT integration is not available. Please install and configure the MQTT integration first."
+    },
+    "step": {
+      "user": {
+        "title": "Configure Hue Tap Dial",
+        "description": "Set up your Hue Tap Dial device\n\n{mqtt_tip}",
+        "data": {
+          "device_id": "Device ID (as shown in zigbee2mqtt)",
+          "name": "Device Name",
+          "skip_mqtt_check": "Skip MQTT validation (use if you're sure the device is working)"
+        }
+      },
+      "confirm": {
+        "title": "Confirm Device",
+        "description": "Do you want to add the Hue Tap Dial '{name}' with ID '{device_id}'?"
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "button_1_press": "Button 1 pressed",
+      "button_1_press_release": "Button 1 released",
+      "button_1_hold": "Button 1 held",
+      "button_1_hold_release": "Button 1 hold released",
+      "button_2_press": "Button 2 pressed",
+      "button_2_press_release": "Button 2 released",
+      "button_2_hold": "Button 2 held",
+      "button_2_hold_release": "Button 2 hold released",
+      "button_3_press": "Button 3 pressed",
+      "button_3_press_release": "Button 3 released",
+      "button_3_hold": "Button 3 held",
+      "button_3_hold_release": "Button 3 hold released",
+      "button_4_press": "Button 4 pressed",
+      "button_4_press_release": "Button 4 released",
+      "button_4_hold": "Button 4 held",
+      "button_4_hold_release": "Button 4 hold released",
+      "dial_rotate_left_slow": "Dial rotated left slowly",
+      "dial_rotate_left_fast": "Dial rotated left fast",
+      "dial_rotate_right_slow": "Dial rotated right slowly",
+      "dial_rotate_right_fast": "Dial rotated right fast",
+      "brightness_step_up": "Brightness increased",
+      "brightness_step_down": "Brightness decreased"
+    }
+  }
+}
