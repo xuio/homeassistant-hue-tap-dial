@@ -10,7 +10,15 @@ This custom integration allows you to use the Philips Hue Tap Dial Switch with H
 - **Battery Sensor**: Displays the current battery level
 - **Auto-discovery**: Automatically discovers Tap Dial devices via zigbee2mqtt
 
-## Installation
+## HACS Installation
+
+1. In Home Assistant, go to HACS → Integrations → ⋮ (upper-right) → Custom repositories.
+2. Add `https://github.com/xuio/homeassistant-hue-tap-dial` as *Integration* category.
+3. Search for "Hue Tap Dial MQTT" and install.
+4. Restart Home Assistant.
+5. Configure via Settings → Devices & Services.
+
+## Manual Installation
 
 1. Copy the `hue_tap_dial_mqtt` folder to your `custom_components` directory
 2. Restart Home Assistant
@@ -180,11 +188,3 @@ You can also use device triggers in automations for a simpler setup:
 2. Choose "Device" as trigger type
 3. Select your Tap Dial device
 4. Choose from available triggers like "Button 1 pressed" or "Dial rotated left slowly"
-
-## HACS Installation
-
-1. In Home Assistant, go to HACS → Integrations → ⋮ (upper-right) → Custom repositories.
-2. Add `https://github.com/xuio/homeassistant-hue-tap-dial` as *Integration* category.
-3. Search for "Hue Tap Dial MQTT" and install.
-4. Restart Home Assistant.
-5. Configure via Settings → Devices & Services.
