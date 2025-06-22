@@ -56,23 +56,14 @@ The integration fires three types of events:
 - `duration`: Hold duration (for hold events)
 
 ### Dial Events (`hue_tap_dial_dial`)
-- `direction`: left or right (for rotation), up or down (for brightness steps)
-- `speed`: slow or fast (for rotation events)
 - `brightness`: Current brightness value (0-255)
 - `brightness_delta`: Change in brightness (e.g., +32, -14) - from z2m
 - `abs_brightness_delta`: Absolute value of the change (always positive)
-- `step_size`: The step size used (from z2m)
-- `transition_time`: Transition time in seconds (from z2m)
-- `action_time`: Time of the action (from z2m)
-- `action_type`: Type of action (step/rotate) (from z2m)
 
 ### Combined Events (`hue_tap_dial_combined`)
-- `held_button`: Which button is being held (1-4)
-- `direction`: left or right
-- `speed`: slow or fast
 - `brightness`: Current brightness value (0-255)
-- `action_time`: Time of the action (from z2m)
-- `action_type`: Type of action (from z2m)
+- `brightness_delta`: Change in brightness (e.g., +32, -14) - from z2m
+- `abs_brightness_delta`: Absolute value of the change (always positive)
 
 ## Device Triggers
 
