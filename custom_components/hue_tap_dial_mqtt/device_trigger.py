@@ -127,10 +127,24 @@ async def async_attach_trigger(
         # For other actions, use a generic event
         event_type = f"{DOMAIN}_action"
 
+    # Resolve friendly topic from device registry -> config entry data
+    topic_id = None
+    registry = dr.async_get(hass)
+    device = registry.async_get(config[CONF_DEVICE_ID])
+    if device and device.config_entries:
+        entry_id = next(iter(device.config_entries))
+        entry = hass.config_entries.async_get_entry(entry_id)
+        if entry and "device_id" in entry.data:
+            topic_id = entry.data["device_id"]
+
+    device_id_param = config[CONF_DEVICE_ID]
     event_config = {
         event_trigger.CONF_PLATFORM: "event",
         event_trigger.CONF_EVENT_TYPE: event_type,
-        event_trigger.CONF_EVENT_DATA: {"action": trigger_type},
+        event_trigger.CONF_EVENT_DATA: {
+            "action": trigger_type,
+            "device_id": topic_id or device_id_param,
+        },
     }
 
     event_config = event_trigger.TRIGGER_SCHEMA(event_config)

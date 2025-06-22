@@ -76,3 +76,6 @@ ATTR_LATEST_VERSION = "latest_version"
 
 # New attribute
 ATTR_ABS_BRIGHTNESS_DELTA = "abs_brightness_delta"
+
+# New attribute
+ATTR_DEVICE_ID = "device_id"

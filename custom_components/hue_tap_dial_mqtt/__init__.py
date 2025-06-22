@@ -51,6 +51,7 @@ from .const import (
     ATTR_UPDATE_AVAILABLE,
     ATTR_INSTALLED_VERSION,
     ATTR_ABS_BRIGHTNESS_DELTA,
+    ATTR_DEVICE_ID,
 )
 from .discovery import async_setup_discovery
 
@@ -202,6 +203,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                             ATTR_BUTTON: button_num,
                             "press_type": press_type,
                             ATTR_ACTION: f"button_{button_num}_{press_type}",
+                            ATTR_DEVICE_ID: device_id,
                         }
                         if "action_duration" in payload:
                             event_data[ATTR_DURATION] = payload["action_duration"]
@@ -254,6 +256,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                             payload.get("action_brightness_delta", 0)
                         ),
                         ATTR_ACTION: f"button_{btn}_dial_brightness_step_{direction}",
+                        ATTR_DEVICE_ID: device_id,
                     }
                     if "brightness" in payload:
                         event_data[ATTR_BRIGHTNESS] = payload["brightness"]
@@ -274,6 +277,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                             payload.get("action_brightness_delta", 0)
                         ),
                         ATTR_ACTION: f"brightness_step_{direction}",
+                        ATTR_DEVICE_ID: device_id,
                     }
                     if "brightness" in payload:
                         event_data[ATTR_BRIGHTNESS] = payload["brightness"]
@@ -316,6 +320,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                             payload.get("action_brightness_delta", 0)
                         ),
                         ATTR_ACTION: f"button_{btn}_dial_brightness_step_{direction}",
+                        ATTR_DEVICE_ID: device_id,
                     }
                     hass.bus.async_fire(EVENT_TYPE_COMBINED, event_data)
                     _LOGGER.debug("Emitted combined legacy rotate event (btn %s)", btn)
@@ -330,6 +335,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                             payload.get("action_brightness_delta", 0)
                         ),
                         ATTR_ACTION: f"brightness_step_{direction}",
+                        ATTR_DEVICE_ID: device_id,
                     }
                     hass.bus.async_fire(EVENT_TYPE_DIAL, event_data)
                     _LOGGER.debug("Emitted dial event from legacy rotate")

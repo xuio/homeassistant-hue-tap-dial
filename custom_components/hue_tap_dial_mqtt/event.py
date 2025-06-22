@@ -32,6 +32,7 @@ from .const import (
     EVENT_TYPE_DIAL,
     MANUFACTURER,
     MODEL,
+    ATTR_DEVICE_ID,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -141,7 +142,10 @@ class HueTapDialButtonPressEvent(EventEntity):
         @callback
         def handle_button_event(event):
             data = event.data
-            if data.get(ATTR_BUTTON) != self._button_num:
+            if (
+                data.get(ATTR_BUTTON) != self._button_num
+                or data.get(ATTR_DEVICE_ID) != self._device_id
+            ):
                 return
             if data.get("press_type") != self._press_type:
                 return
@@ -190,6 +194,8 @@ class HueTapDialDialEvent(EventEntity):
         def handle_dial_event(event) -> None:
             """Handle dial event."""
             event_data = event.data
+            if event_data.get(ATTR_DEVICE_ID) != self._device_id:
+                return
             action = event_data.get(ATTR_ACTION, "")
 
             # Determine event type based on action
@@ -270,7 +276,10 @@ class HueTapDialButtonDialEvent(EventEntity):
         @callback
         def handle_combined(event):
             data = event.data
-            if data.get(ATTR_HELD_BUTTON) != self._button_num:
+            if (
+                data.get(ATTR_HELD_BUTTON) != self._button_num
+                or data.get(ATTR_DEVICE_ID) != self._device_id
+            ):
                 return
             action = data.get(ATTR_ACTION)
             direction = data.get(ATTR_DIRECTION)

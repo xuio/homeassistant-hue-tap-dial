@@ -10,7 +10,6 @@ from typing import Any
 from homeassistant.components import mqtt
 from homeassistant.const import CONF_DEVICE_ID, CONF_NAME
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import discovery_flow
 from homeassistant.config_entries import ConfigEntry
 
 from .const import DOMAIN
@@ -182,8 +181,7 @@ async def async_setup_discovery(hass: HomeAssistant) -> None:
 
         # Create discovery flow
         hass.async_create_task(
-            discovery_flow.async_create_flow(
-                hass,
+            hass.config_entries.flow.async_init(
                 DOMAIN,
                 context={"source": "mqtt"},
                 data=discovery_info,
